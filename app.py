@@ -60,35 +60,37 @@ else:
 st.subheader("Dataset Preview")
 st.dataframe(df.head())
 
-# Column Selection
-st.subheader("Select Columns")
-text_column = st.selectbox("Select the column containing incident descriptions:", df.columns)
+# Show Column Selection Only for Uploaded Data
+if uploaded_file:
+    # Column Selection
+    st.subheader("Select Columns")
+    text_column = st.selectbox("Select the column containing incident descriptions:", df.columns)
 
-# Default Category Columns
-default_columns = ["nature_of_inj", "part_of_body", "event_type", "evn_factor"]
+    # Default Category Columns
+    default_columns = ["nature_of_inj", "part_of_body", "event_type", "evn_factor"]
 
-# Filter only integer columns for selection
-integer_columns = [col for col in df.columns if pd.api.types.is_integer_dtype(df[col])]
+    # Filter only integer columns for selection
+    integer_columns = [col for col in df.columns if pd.api.types.is_integer_dtype(df[col])]
 
-# Multiselect for category columns with defaults pre-selected
-category_columns = st.multiselect(
-    "Select the category code columns (must be integer columns):",
-    integer_columns,
-    default=[col for col in default_columns if col in df.columns],
-)
-
-# Map code columns to description columns
-description_mapping = {}
-for category in category_columns:
-    description_column = st.selectbox(
-        f"Select the description column for '{category}':",
-        df.columns,
-        index=list(df.columns).index(category) + 1  # Assumes description column is next to the code column
+    # Multiselect for category columns with defaults pre-selected
+    category_columns = st.multiselect(
+        "Select the category code columns (must be integer columns):",
+        integer_columns,
+        default=[col for col in default_columns if col in df.columns],
     )
-    description_mapping[category] = description_column
 
-# Save description_mapping to session state
-st.session_state["description_mapping"] = description_mapping
+    # Map code columns to description columns
+    description_mapping = {}
+    for category in category_columns:
+        description_column = st.selectbox(
+            f"Select the description column for '{category}':",
+            df.columns,
+            index=list(df.columns).index(category) + 1  # Assumes description column is next to the code column
+        )
+        description_mapping[category] = description_column
+
+    # Save description_mapping to session state
+    st.session_state["description_mapping"] = description_mapping
 
 # Allow users to select the model
 st.subheader("Select Model")
