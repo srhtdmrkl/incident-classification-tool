@@ -28,6 +28,9 @@ if "training_logs" not in st.session_state:
 if "description_mapping" not in st.session_state:
     st.session_state["description_mapping"] = None
 
+# Default category columns for the default dataset
+default_category_columns = ["nature_of_inj", "part_of_body", "event_type", "evn_factor"]
+
 # File Upload
 st.subheader("Dataset Upload")
 st.info(
@@ -46,6 +49,7 @@ if uploaded_file is not None:
     else:
         df = pd.read_excel(uploaded_file)
         st.success(f"File '{uploaded_file.name}' successfully uploaded!")
+    use_default_dataset = False
 else:
     # Load pre-trained models and default dataset
     df = pd.read_excel("osha-data.xlsx")  # Default dataset
@@ -54,6 +58,7 @@ else:
         "Logistic Regression": pickle.load(open("logistic_regression.pkl", "rb")),
         "Linear SVC": pickle.load(open("linear_svc.pkl", "rb")),
     }
+    use_default_dataset = True
     st.warning("Using the default dataset with pre-trained models.")
 
 # Show Dataset Preview
@@ -61,13 +66,10 @@ st.subheader("Dataset Preview")
 st.dataframe(df.head())
 
 # Show Column Selection Only for Uploaded Data
-if uploaded_file:
+if not use_default_dataset:
     # Column Selection
     st.subheader("Select Columns")
     text_column = st.selectbox("Select the column containing incident descriptions:", df.columns)
-
-    # Default Category Columns
-    default_columns = ["nature_of_inj", "part_of_body", "event_type", "evn_factor"]
 
     # Filter only integer columns for selection
     integer_columns = [col for col in df.columns if pd.api.types.is_integer_dtype(df[col])]
@@ -76,7 +78,7 @@ if uploaded_file:
     category_columns = st.multiselect(
         "Select the category code columns (must be integer columns):",
         integer_columns,
-        default=[col for col in default_columns if col in df.columns],
+        default=[col for col in default_category_columns if col in df.columns],
     )
 
     # Map code columns to description columns
@@ -91,6 +93,16 @@ if uploaded_file:
 
     # Save description_mapping to session state
     st.session_state["description_mapping"] = description_mapping
+else:
+    # Use default values for default dataset
+    text_column = "Incident Description"  # Change this if the default dataset's column is named differently
+    category_columns = default_category_columns
+    description_mapping = {
+        "nature_of_inj": "Nature of Injury",
+        "part_of_body": "Part of Body",
+        "event_type": "Event type",
+        "evn_factor": "Environmental Factor",
+    }
 
 # Allow users to select the model
 st.subheader("Select Model")
@@ -116,12 +128,16 @@ if st.session_state["models"]:
             for category, classification in classifications.items():
                 # Retrieve description_mapping from session state
                 code_to_description = dict(
-                    zip(df[category], df[st.session_state["description_mapping"][category]])
+                    zip(df[category], df[description_mapping[category]])
                 )
                 description = code_to_description.get(classification, "Unknown")
-                st.write(f"- **{category}:** {description} (Code: {classification})")
+                
+                # Replace the column name with a more user-friendly label
+                friendly_name = description_mapping[category]
+                st.write(f"- **{friendly_name}:** {description} (Code: {classification})")
         else:
             st.error("Please enter a description to analyze.")
+
 
 # Train Model Button for Uploaded Data
 if uploaded_file and st.button("Train Model"):
