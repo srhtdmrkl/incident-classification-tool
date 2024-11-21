@@ -99,29 +99,29 @@ model_choice = st.selectbox(
     ["Logistic Regression", "Linear SVC"]
 )
 
-# Prediction Section
+# Classification Section
 if st.session_state["models"]:
-    st.subheader("Make a Prediction")
+    st.subheader("Incident Classification")
     new_description = st.text_area("Enter a new incident description:")
-    if st.button("Predict"):
+    if st.button("Analyze"):
         if new_description.strip():
             # Use pre-trained models
             vectorizer = st.session_state["vectorizer"]
             processed_description = vectorizer.transform([new_description])
-            predictions = {
+            classifications = {
                 category: st.session_state["models"][model_choice][category].predict(processed_description)[0]
                 for category in category_columns
             }
-            st.write("### Predictions:")
-            for category, prediction in predictions.items():
+            st.write("### Results:")
+            for category, classification in classifications.items():
                 # Retrieve description_mapping from session state
                 code_to_description = dict(
                     zip(df[category], df[st.session_state["description_mapping"][category]])
                 )
-                description = code_to_description.get(prediction, "Unknown")
-                st.write(f"- **{category}:** {description} (Code: {prediction})")
+                description = code_to_description.get(classification, "Unknown")
+                st.write(f"- **{category}:** {description} (Code: {classification})")
         else:
-            st.error("Please enter a description to predict.")
+            st.error("Please enter a description to analyze.")
 
 # Train Model Button for Uploaded Data
 if uploaded_file and st.button("Train Model"):
@@ -147,8 +147,8 @@ if uploaded_file and st.button("Train Model"):
             model.fit(X_train, train_data[category])
             
             # Evaluate the model
-            predictions = model.predict(X_test)
-            accuracy = accuracy_score(test_data[category], predictions)
+            classifications = model.predict(X_test)
+            accuracy = accuracy_score(test_data[category], classifications)
             
             # Store the trained model and test data
             models[category] = {
