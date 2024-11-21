@@ -1,12 +1,11 @@
 import streamlit as st
 import pandas as pd
+import pickle
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import LinearSVC
 from sklearn.metrics import accuracy_score
-import pickle
 
 # Set the browser tab title and other configuration
 st.set_page_config(
@@ -53,7 +52,6 @@ else:
     st.session_state["vectorizer"] = pickle.load(open("vectorizer.pkl", "rb"))
     st.session_state["models"] = {
         "Logistic Regression": pickle.load(open("logistic_regression.pkl", "rb")),
-        "Random Forest": pickle.load(open("random_forest.pkl", "rb")),
         "Linear SVC": pickle.load(open("linear_svc.pkl", "rb")),
     }
     st.warning("Using the default dataset with pre-trained models.")
@@ -96,7 +94,7 @@ st.session_state["description_mapping"] = description_mapping
 st.subheader("Select Model")
 model_choice = st.selectbox(
     "Choose the model to use:",
-    ["Logistic Regression", "Random Forest", "Linear SVC"]
+    ["Logistic Regression", "Linear SVC"]
 )
 
 # Prediction Section
@@ -140,7 +138,10 @@ if uploaded_file and st.button("Train Model"):
         # Train Models using the selected model
         models = {}
         for category in category_columns:
-            model = get_model(model_choice)
+            if model_choice == "Logistic Regression":
+                model = LogisticRegression(max_iter=1000, class_weight="balanced", random_state=42)
+            elif model_choice == "Linear SVC":
+                model = LinearSVC(class_weight="balanced", random_state=42)
             model.fit(X_train, train_data[category])
             
             # Evaluate the model
