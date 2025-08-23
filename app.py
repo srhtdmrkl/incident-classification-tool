@@ -28,6 +28,7 @@ def download_nltk_data():
         nltk.download('wordnet')
 
 # --- Text Processing ---
+nltk.download('stopwords')
 stop_words = set(stopwords.words('english'))
 lemmatizer = WordNetLemmatizer()
 
