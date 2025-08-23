@@ -1,0 +1,4 @@
+establishment_name,ein,company_name,street_address,city,state,zip,naics_code,industry_description,size,establishment_type,year_filing_for,annual_average_employees,total_hours_worked,no_injuries_illnesses,total_deaths,total_dafw_cases,total_djtr_cases,total_other_cases,total_dafw_days,total_djtr_days,total_injuries,total_skin_disorders,total_respiratory_conditions,total_poisonings,total_hearing_loss,total_other_illnesses,change_reason
+Plant 1,256986325,ABC Company,123 Main St,Washington,DC,20001,112210,Hog feedlots,21,1,2024,77,152152,1,0,3,1,2,10,5,2,1,2,0,0,1,
+Store 2,321589765,ABC Company,234 Maple Ave,Washington,DC,200011234,311212,Milling rice,22,1,2024,200,395200,2,0,0,0,0,0,0,0,0,0,0,0,0,
+Store 3,269854163,ABC Company,456 41st St,New York,NY,10003,236115,,3,1,2024,300,592800,1,0,4,0,3,7,4,4,1,1,1,0,0,Correction of prior submission
