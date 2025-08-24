@@ -229,7 +229,7 @@ In this first case, the **Logistic Regression** model was the only one to accura
 This example tells a different story. For the straightforward `Nature` and `Part of Body`, all models were correct, with BERT and XGBoost showing much higher confidence. More revealingly, XGBoost selected the most logical `Event Type`, and it correctly identified the `Source` as a **powered** tool—a critical detail that BERT got wrong.
 
 ---
-### A Note for Data Enthusiasts: Technical Breakdown 🤓
+### A Note for Data Enthusiasts: Technical Breakdown
 A look at the precision, recall, and averaging methods reveals a classic case of an imbalanced dataset, even after our feature engineering efforts.
 
 **Macro Avg vs. Weighted Avg:** The most telling sign is the large gap between the "macro" and "weighted" averages. Using the top-performing **BERT model for Nature of Injury** as an example:
