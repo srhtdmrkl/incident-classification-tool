@@ -2,20 +2,43 @@ import streamlit as st
 import pandas as pd
 import joblib
 import re
+import torch
+import torch.nn.functional as F
+from transformers import BertTokenizer, BertModel
+from sklearn.preprocessing import LabelEncoder
+import numpy as np
 from nltk.corpus import stopwords
-from nltk.stem import WordNetLemmatizer
 import nltk
+from nltk.stem import WordNetLemmatizer
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.feature_extraction.text import TfidfVectorizer
 from scipy.sparse import hstack
+import warnings
+
+# --- Main Streamlit App ---
+st.set_page_config(
+    page_title="Incident Classification Tool",
+    page_icon="🛠️",
+    layout="wide",
+)
+
+# Suppress all warnings
+warnings.filterwarnings('ignore')
 
 # --- Constants ---
-MODEL_PATH = "logistic_regression.pkl"
-LABEL_ENCODERS_PATH = "label_encoders_logistic_regression.pkl"
-TRAINING_SCRIPT_NAME = "incident-classification-logisticregression.py"
+LOGISTIC_REGRESSION_MODEL_PATH = "logistic_regression.pkl"
+LOGISTIC_REGRESSION_LABEL_ENCODERS_PATH = "label_encoders_logistic_regression.pkl"
+XGBOOST_MODELS_PATH = "xgboost_models_dict.pkl"
+XGBOOST_LABEL_ENCODERS_PATH = "label_encoders_xgboost.pkl"
+XGBOOST_LABEL_MAPPINGS_PATH = "label_mappings_xgboost.pkl"
+BERT_MODEL_PATH = "bert_multi_label_model.pth"
+BERT_TOKENIZER_PATH = "bert_tokenizer"
+BERT_LABEL_ENCODERS_PATH = "bert_label_encoders.pkl"
 CLEANED_NARRATIVE_COLUMN = 'Narrative_Cleaned'
+TRAINING_SCRIPT_NAME = "incident-classification-all-models.py"
 
 # --- NLTK Downloads ---
+@st.cache_resource
 def download_nltk_data():
     """Download necessary NLTK data if not present."""
     try:
@@ -27,13 +50,22 @@ def download_nltk_data():
     except LookupError:
         nltk.download('wordnet')
 
-# --- Text Processing ---
-nltk.download('stopwords')
+# --- Custom Transformers and Functions ---
+# This class is required for joblib to load the pickled LR and XGBoost pipelines.
+class TextFeatureTransformer(BaseEstimator, TransformerMixin):
+    def __init__(self, max_features=5000):
+        self.vectorizer = TfidfVectorizer(max_features=max_features)
+    def fit(self, X, y=None):
+        self.vectorizer.fit(X[CLEANED_NARRATIVE_COLUMN])
+        return self
+    def transform(self, X):
+        return hstack([self.vectorizer.transform(X[CLEANED_NARRATIVE_COLUMN])])
+
+# Text cleaning for Logistic Regression and XGBoost
+download_nltk_data()
 stop_words = set(stopwords.words('english'))
 lemmatizer = WordNetLemmatizer()
-
 def clean_text_advanced(text):
-    """Advanced text cleaning function including lemmatization."""
     text = str(text).lower()
     text = re.sub(r'[^a-z0-9\s-]', '', text)
     tokens = text.split()
@@ -41,61 +73,91 @@ def clean_text_advanced(text):
     tokens = [word for word in tokens if word not in stop_words and len(word) > 1]
     return ' '.join(tokens)
 
-# --- Custom Transformer ---
-# This class definition is required for joblib to load the pickled pipeline.
-# It must match the definition used during model training.
-class TextFeatureTransformer(BaseEstimator, TransformerMixin):
-    def __init__(self, max_features=5000):
-        # The TfidfVectorizer instance will be replaced by the one loaded from the pickle file.
-        self.vectorizer = TfidfVectorizer(max_features=max_features)
+# BERT Model Architecture (required to load the model)
+class BERTMultiLabelClassifier(torch.nn.Module):
+    def __init__(self, n_classes_dict):
+        super(BERTMultiLabelClassifier, self).__init__()
+        self.bert = BertModel.from_pretrained('bert-base-uncased')
+        self.dropout = torch.nn.Dropout(p=0.3)
+        self.classifiers = torch.nn.ModuleDict({
+            col: torch.nn.Linear(self.bert.config.hidden_size, n_classes)
+            for col, n_classes in n_classes_dict.items()
+        })
+    def forward(self, input_ids, attention_mask):
+        output = self.bert(input_ids=input_ids, attention_mask=attention_mask)
+        pooled_output = self.dropout(output.pooler_output)
+        logits = {col: classifier(pooled_output) for col, classifier in self.classifiers.items()}
+        return logits
 
-    def fit(self, X, y=None):
-        # This method is not called during prediction, only for training.
-        self.vectorizer.fit(X[CLEANED_NARRATIVE_COLUMN])
-        return self
-
-    def transform(self, X):
-        return hstack([self.vectorizer.transform(X[CLEANED_NARRATIVE_COLUMN])])
+# Text cleaning for BERT
+def clean_text_for_bert(text):
+    return str(text)
 
 # --- Model Loading ---
 @st.cache_resource
-def load_artifacts():
-    """Load the trained model and label encoders."""
+def load_logistic_regression_artifacts():
     try:
-        model = joblib.load(MODEL_PATH)
-        label_encoders = joblib.load(LABEL_ENCODERS_PATH)
+        model = joblib.load(LOGISTIC_REGRESSION_MODEL_PATH)
+        label_encoders = joblib.load(LOGISTIC_REGRESSION_LABEL_ENCODERS_PATH)
         return model, label_encoders
     except FileNotFoundError as e:
-        st.error(f"Error: Model or encoder file not found: {e.filename}")
-        st.info(f"Please run '{TRAINING_SCRIPT_NAME}' to train and save the artifacts first.")
-        st.stop()
+        st.error(f"Error: Logistic Regression model file not found: {e.filename}")
+        st.info(f"Please run the training script to train and save the artifacts first.")
+        return None, None
     except Exception as e:
-        st.error(f"An error occurred while loading artifacts: {e}")
-        st.stop()
+        st.error(f"An error occurred while loading Logistic Regression artifacts: {e}")
+        return None, None
 
-# --- Streamlit App ---
-st.set_page_config(
-    page_title="Incident Classification Tool",
-    page_icon="🛠️",
-    layout="wide",
-)
+@st.cache_resource
+def load_xgboost_artifacts():
+    try:
+        models = joblib.load(XGBOOST_MODELS_PATH)
+        label_encoders = joblib.load(XGBOOST_LABEL_ENCODERS_PATH)
+        label_mappings = joblib.load(XGBOOST_LABEL_MAPPINGS_PATH)
+        return models, label_encoders, label_mappings
+    except FileNotFoundError as e:
+        st.error(f"Error: XGBoost model files not found: {e.filename}")
+        st.info(f"Please run the training script to train and save the artifacts first.")
+        return None, None, None
+    except Exception as e:
+        st.error(f"An error occurred while loading XGBoost artifacts: {e}")
+        return None, None, None
 
-# Download NLTK data
-download_nltk_data()
+@st.cache_resource
+def load_bert_artifacts():
+    try:
+        label_encoder_classes = joblib.load(BERT_LABEL_ENCODERS_PATH)
+        
+        label_encoders = {}
+        for col, classes in label_encoder_classes.items():
+            le = LabelEncoder()
+            le.classes_ = np.array(classes)
+            label_encoders[col] = le
+            
+        n_classes_dict = {col: len(le.classes_) for col, le in label_encoders.items()}
 
-# Load model and encoders
-model, label_encoders = load_artifacts()
-if model and label_encoders:
-    # The success message can be removed for a cleaner public-facing UI
-    pass
+        model = BERTMultiLabelClassifier(n_classes_dict)
+        model.load_state_dict(torch.load(BERT_MODEL_PATH, map_location=torch.device('cpu')))
+        model.eval()
 
-# App Title
-st.title("OSHA Severe Injury Classification Tool")
-st.subheader("Powered by a Multi-Output Logistic Regression Model")
+        tokenizer = BertTokenizer.from_pretrained(BERT_TOKENIZER_PATH)
+        return model, tokenizer, label_encoders
+    except FileNotFoundError as e:
+        st.error(f"Error: BERT model files not found: {e.filename}")
+        st.info(f"Please run the training script to train and save the artifacts first.")
+        return None, None, None
+    except Exception as e:
+        st.error(f"An error occurred while loading BERT artifacts: {e}")
+        return None, None, None
 
+st.title("OSHA Injury Classification Tool")
+st.subheader("Compare Classification Models")
+
+# --- About this Tool ---
 with st.expander("ℹ️ About this Tool"):
     st.write("""
-    This tool uses a multi-output Logistic Regression model to automatically classify workplace incident reports.
+    This tool uses different machine learning models to automatically classify workplace injuries. You can choose between **Logistic Regression**, 
+    **XGBoost**, and **BERT** models to see how they perform on the same incident description. 
 
     **Data Source:**
     The model was trained on a public dataset of severe injury reports from the U.S. Occupational Safety and Health Administration (OSHA), covering the period from January 1, 2015, to February 28, 2025. 
@@ -112,119 +174,184 @@ with st.expander("ℹ️ About this Tool"):
     The goal of this application is to provide a quick, automated way to categorize incident narratives for analysis and reporting, demonstrating the capabilities of a machine learning model for this task.
     """)
 
+# --- Model Performance Analysis ---
 with st.expander("🔬 Model Performance Analysis"):
     st.markdown("""
-    ### Analysis of the OSHA Severe Injury Classification Model
-    Welcome! This document provides a transparent look into the performance of the logistic regression model powering our new incident classification tool. This model was trained on over a decade of data (Jan 2015 - Feb 2025) from the U.S. Occupational Safety and Health Administration's (OSHA) Severe Injury Reports database.
+### Analysis of the OSHA Injury Classification Models
+Welcome! This document provides a transparent, comparative look into the performance of the three models powering our incident classification tool: Logistic Regression, XGBoost, and a BERT-based classifier. These models were trained on over a decade of data (Jan 2015 - Feb 2025) from the U.S. Occupational Safety and Health Administration's (OSHA) Severe Injury Reports database.
+Understanding the data's origin is key. OSHA requires employers to report only specific, severe work-related injuries: amputations, in-patient hospitalizations, and loss of an eye. This scope makes our dataset highly specialized. To better handle the numerous rare incident types, we performed feature engineering by consolidating classifications into the 3rd-level OIICS hierarchy, grouping more specific sub-categories into their broader parent classes. This report will walk you through the strengths and weaknesses of each model within this context.
 
-    Understanding the source of this data is key. OSHA requires employers to report only specific, severe work-related injuries: amputations, in-patient hospitalizations, and loss of an eye. This scope directly influences the model's behavior, making it highly specialized. This report will walk you through its strengths and weaknesses within that context.
+Our goal is to automatically classify severe incidents across four key dimensions based on the **Occupational Injury and Illness Classification System (OIICS) Manual, Version 2.01**:
 
-    Our goal is to automatically classify these severe incidents across four key dimensions based on the **Occupational Injury and Illness Classification System (OIICS) Manual, Version 2.01**:
+* Nature of Injury
+* Body Part Affected
+* Type of Event
+* Source of Injury
 
-    *   Nature of Injury
-    *   Body Part Affected
-    *   Type of Event
-    *   Source of Injury
+---
+### Model Showdown: A Comparative Overview
+While our initial Logistic Regression model provided a solid baseline, we introduced XGBoost and BERT to explore more advanced architectures. The **weighted F1-score**, which balances precision and recall while accounting for class imbalance, is our primary metric for comparison.
 
-    ### Overall Performance
-    At a high level, the model provides a solid baseline for classifying severe injuries. The overall accuracy—the percentage of incidents the model classifies correctly—shows its general effectiveness on this specific type of data.
+| Model               | Nature of Injury (F1) | Part of Body (F1) | Event Type (F1) | Source of Injury (F1) |
+| ------------------- | :-------------------: | :---------------: | :-------------: | :-------------------: |
+| 🥇 **BERT** |      **0.75**      |       0.72      |   **0.59**  |         0.35     |
+| 🥈 **XGBoost** |      0.67         |    **0.70**    |   0.54    |      **0.50**     |
+| 🥉 **Logistic Reg.** |      0.65       |       0.62    |   0.52     |         0.48       |
 
-    *   **Nature of Injury:** 65% Accuracy
-    *   **Part of Body:** 64% Accuracy
-    *   **Event Type:** 51% Accuracy
-    *   **Source of Injury:** 47% Accuracy
+The results show a clear performance hierarchy. The **BERT** model, with its deep understanding of language context, excels at deciphering the nuanced descriptions in the `Nature of Injury` and `Event Type` fields. However, **XGBoost** proves to be highly effective for the more categorical `Part of Body` and `Source of Injury` classifications. Logistic Regression remains a consistent, albeit less powerful, baseline.
 
-    These metrics show that the model is most confident when determining the nature of an injury and the body part affected. It finds it more challenging to pinpoint the specific event and source, which are often more complex and nuanced. Given its specialized training data, the model's predictions should be seen as a helpful suggestion for categorizing severe incidents.
+---
+### 🔬 Case Studies
+Aggregate metrics tell a story about overall performance, but individual cases can reveal fascinating nuances about how each model interprets information.
 
-    ### Direct Result of the Data's Focus
-    The model's performance is a direct reflection of the OSHA reporting requirements. It excels at identifying the very injuries it has seen most often—the ones that legally must be reported—while struggling with incidents that are less common in this severe-injury dataset.
+#### Case Study 1: The Sprained Wrist (Simple Model Wins on Specificity)
+> "A prep cook, slipped and fell in the kitchen area of a coffee shop, resulting in a sprained wrist. The incident occurred when cook stepped on a wet floor near the dishwashing station, causing him to lose balance and fall, landing on his right wrist."
 
-    #### What the Model Does Well 👍
-    The model is highly reliable when classifying the common, severe incidents that form the core of the OSHA database. Because the dataset is rich with examples of injuries like amputations and major fractures, the model has learned to identify them with high confidence. Here are examples of categories where the model excels:
+| Category         | Logistic Regression                       | XGBoost                               | BERT                                       |
+| ---------------- | ----------------------------------------- | ------------------------------------- | ------------------------------------------ |
+| **Nature** | ✅ **Sprains, strains, tears (21%)** | ❌ Fractures (24%)                    | ❌ Nonspecified injuries... (44%)          |
+| **Part of Body** | ✅ Wrist(s) (57%)                         | ✅ Wrist(s) (89%)                     | ✅ Wrist(s) (68%)                          |
+| **Event Type** | ✅ Fall on same level due to slipping (12%) | ✅ Fall on same level due to slipping (71%) | ✅ Fall on same level due to slipping (88%)  |
+| **Source** | ✅ Floors (4%)                            | ✅ Floors (71%)                       | ✅ Floors (70%)                            |
 
-    *   **Nature of Injury:** It is highly proficient with *Amputations, avulsions, enucleations* (F1-score of 0.75 on 995 cases) and *Fractures* (F1-score of 0.78 on 3060 cases). These are pillar categories for severe injury reporting.
-    *   **Part of Body:** The model is exceptionally accurate with injuries to *Finger(s), fingernail(s)* (97% F1-score), a common site for amputations and severe crushing injuries.
-    *   **Event Type:** It reliably identifies common industrial accidents like *Caught in running equipment or machinery* (74% F1-score) and *Fall on same level due to slipping* (82% F1-score), both of which frequently lead to hospitalization.
-    *   **Source of Injury:** It's very good at recognizing incidents involving *Industrial vehicles* (79% F1-score) and *Roofs* (78% F1-score), which are common sources of severe accidents.
+In this first case, the **Logistic Regression** model was the only one to accurately identify the `Nature of Injury`. Its simpler approach likely created a strong, direct association with the explicit word "sprained," a detail the more complex models overlooked by generalizing from similar incidents.
 
-    #### What the Model Struggles With 👎
-    The model's primary weakness is classifying injuries that, while potentially serious, are less frequently reported to OSHA or are secondary to a primary severe injury. An incident like a minor scratch would not be in the dataset unless it was part of a larger event that led to hospitalization. For many of these less-represented categories, the model scored a 0.00 F1-score, meaning it failed to correctly identify any of them. Examples include:
+#### Case Study 2: The Carpenter's Laceration (Complex Models Show Their Power)
+> "A carpenter, sustained a minor laceration on his left index finger while using a circular saw at construction site. The incident occurred when the saw blade caught on a piece of wood, causing a momentary loss of control and a superficial cut to carpenter's finger."
 
-    *   **Nature of Injury:** *Anxiety, stress* (1 case) and *Burns and corrosions* (2 cases). These may not always result in immediate hospitalization and are thus rare in the data.
-    *   **Part of Body:** Vague categories like *Arm(s), n.e.c.* (1 case) are difficult for the model to learn.
-    *   **Event Type:** *Bites and stings* (1 case) are rarely severe enough to meet OSHA reporting criteria.
-    *   **Source of Injury:** Specific machinery like *Agricultural and garden machinery* (1 case) is underrepresented.
+| Category         | Logistic Regression                       | XGBoost                               | BERT                                       |
+| ---------------- | ----------------------------------------- | ------------------------------------- | ------------------------------------------ |
+| **Nature** | ✅ Cuts, lacerations (49%)                  | ✅ Cuts, lacerations (79%)            | ✅ Cuts, lacerations (92%)                 |
+| **Part of Body** | ✅ Finger(s), fingernail(s) (62%)         | ✅ Finger(s), fingernail(s) (94%)     | ✅ Finger(s), fingernail(s) (90%)         |
+| **Event Type** | ❌ Struck, caught... (0.2%)               | ✅ Injured by handheld object... (25%) | ❌ Struck, caught... (16%)               |
+| **Source** | ✅ Cutting handtools—**powered** (17%)    | ✅ Cutting handtools—**powered** (51%) | ❌ Cutting handtools—**nonpowered** (15%) |
 
-    **Key Takeaway:** You can trust the model's predictions for incidents that clearly fall under the OSHA "severe" definition. For injuries that are less common in this dataset, its output should be reviewed carefully.
+This example tells a different story. For the straightforward `Nature` and `Part of Body`, all models were correct, with BERT and XGBoost showing much higher confidence. More revealingly, XGBoost selected the most logical `Event Type`, and it correctly identified the `Source` as a **powered** tool—a critical detail that BERT got wrong.
 
-    ### A Note for Data Enthusiasts: Technical Breakdown 🤓
-    For those interested in the technical details, a look at the precision, recall, and different averaging methods in the report reveals a classic case of an imbalanced dataset.
+---
+### A Note for Data Enthusiasts: Technical Breakdown 🤓
+A look at the precision, recall, and averaging methods reveals a classic case of an imbalanced dataset, even after our feature engineering efforts.
 
-    **Macro Avg vs. Weighted Avg:** The most telling sign is the large gap between the "macro average" and "weighted average" for the F1-score. For the **Nature of Injury** model, the macro average F1-score is 0.33, while the weighted average is 0.65.
-    *   The **macro average** treats every class equally. Because so many rare classes have a score of 0, this average is low.
-    *   The **weighted average** gives more importance to classes with more samples. Since the model performs well on high-sample classes (like "Fractures"), this average is much higher. This gap confirms that the model's performance is driven by a few dominant classes.
+**Macro Avg vs. Weighted Avg:** The most telling sign is the large gap between the "macro" and "weighted" averages. Using the top-performing **BERT model for Nature of Injury** as an example:
+* The **macro average F1-score is 0.26**. This average treats every class equally. Because so many rare classes have an F1-score of 0, this average is pulled down significantly.
+* The **weighted average F1-score is 0.75**. This average is weighted by the number of samples in each class. Since the model performs exceptionally well on high-sample classes (like "Fractures"), this average is much higher. This gap is a clear indicator that the model's high-level performance is driven by a few dominant classes.
+""")
+            
+# --- Model Selection ---
+st.markdown("---")
+st.subheader("Model Selection")
+selected_model = st.radio("Choose a model:", ('Logistic Regression', 'XGBoost', 'BERT'), horizontal=True)
 
-    **Precision vs. Recall Trade-offs:** The report shows interesting trade-offs. For example, in the **Nature of Injury** report, look at *Blisters*:
-    *   **Recall is 1.00:** The model correctly identified 100% of all true "Blister" incidents in the test set. It misses none.
-    *   **Precision is 0.40:** However, when the model predicted "Blister," it was only correct 40% of the time. This means it incorrectly labeled other injuries as blisters quite often. This is a "high recall, low precision" scenario.
-    """)
+# Load artifacts based on selection
+if selected_model == 'Logistic Regression':
+    model, label_encoders = load_logistic_regression_artifacts()
+    xgboost_models, xgboost_encoders, xgboost_mappings = None, None, None
+    bert_model, bert_tokenizer, bert_encoders = None, None, None
+elif selected_model == 'XGBoost':
+    xgboost_models, xgboost_encoders, xgboost_mappings = load_xgboost_artifacts()
+    model, label_encoders = None, None
+    bert_model, bert_tokenizer, bert_encoders = None, None, None
+else: # BERT
+    bert_model, bert_tokenizer, bert_encoders = load_bert_artifacts()
+    model, label_encoders = None, None
+    xgboost_models, xgboost_encoders, xgboost_mappings = None, None, None
 
-# Define target columns (must match the order in which they were trained)
-if label_encoders:
-    target_columns = list(label_encoders.keys())
-
-# Classification Section
+# --- Classification Section ---
+st.markdown("---")
 st.subheader("Incident Classification")
 new_description = st.text_area("Enter a new incident description:", height=150)
 
 if st.button("Classify Incident"):
-    if new_description.strip():
-        # Prepare the input for the model
-        processed_description = clean_text_advanced(new_description)
-        input_df = pd.DataFrame({CLEANED_NARRATIVE_COLUMN: [processed_description]})
-
-        # Make predictions using the pipeline
-        try:
-            predictions = model.predict(input_df)
-            probabilities = model.predict_proba(input_df)
-        except Exception as e:
-            st.error(f"An error occurred during prediction: {e}")
-            st.stop()
-
-        st.write("### Classification Results:")
-        results_data = []
-        for i, target_col in enumerate(target_columns):
-            predicted_label_encoded = predictions[0, i]
-            confidence = probabilities[i][0, predicted_label_encoded]
-
-            le = label_encoders[target_col]
-            predicted_label = le.inverse_transform([predicted_label_encoded])[0]
-            category = target_col.replace('_Generalized', '').replace('_', ' ')
-            
-            results_data.append({
-                "Category": category,
-                "Prediction": predicted_label,
-                "Confidence": confidence * 100
-            })
-
-        results_df = pd.DataFrame(results_data)
-        st.dataframe(results_df,
-                     use_container_width=True,
-                     column_config={
-                         "Category": st.column_config.TextColumn("Category", help="The classification category.", width="medium"),
-                         "Prediction": st.column_config.TextColumn("Prediction", help="The model's predicted label for the category.", width="large"),
-                         "Confidence": st.column_config.ProgressColumn(
-                             "Confidence",
-                             help="The model's confidence in the prediction (0-100%).",
-                             format="%.1f%%",
-                             min_value=0,
-                             max_value=100,
-                         ),
-                     },
-                     hide_index=True)
-    else:
+    if not new_description.strip():
         st.error("Please enter a description to classify.")
+    else:
+        results_data = []
 
+        if selected_model == 'Logistic Regression' and model and label_encoders:
+            try:
+                processed_description = clean_text_advanced(new_description)
+                input_df = pd.DataFrame({CLEANED_NARRATIVE_COLUMN: [processed_description]})
+                
+                predictions = model.predict(input_df)
+                probabilities = model.predict_proba(input_df)
+
+                target_columns = list(label_encoders.keys())
+                for i, target_col in enumerate(target_columns):
+                    predicted_label_encoded = predictions[0, i]
+                    confidence = probabilities[i][0, predicted_label_encoded]
+                    le = label_encoders[target_col]
+                    predicted_label = le.inverse_transform([predicted_label_encoded])[0]
+                    category = target_col.replace('_Generalized', '').replace('_', ' ')
+                    results_data.append({"Category": category, "Prediction": predicted_label, "Confidence": confidence * 100})
+            except Exception as e:
+                st.error(f"An error occurred with Logistic Regression model: {e}")
+
+        elif selected_model == 'XGBoost' and xgboost_models and xgboost_encoders:
+            try:
+                processed_description = clean_text_advanced(new_description)
+                input_df = pd.DataFrame({'Narrative_Cleaned': [processed_description]})
+                
+                target_columns = list(xgboost_encoders.keys())
+                for col in target_columns:
+                    current_model = xgboost_models[col]
+                    label_encoder = xgboost_encoders[col]
+                    mapping = xgboost_mappings[col]
+                    inverse_mapping = {v: k for k, v in mapping.items()}
+
+                    pred_sequential = current_model.predict(input_df)[0]
+                    probabilities = current_model.predict_proba(input_df)
+                    confidence = probabilities[0, pred_sequential]
+                    pred_original_encoding = inverse_mapping[pred_sequential]
+                    final_label = label_encoder.inverse_transform([pred_original_encoding])[0]
+                    
+                    category = col.replace('_Generalized', '').replace('_', ' ')
+                    results_data.append({"Category": category, "Prediction": final_label, "Confidence": confidence * 100})
+            except Exception as e:
+                st.error(f"An error occurred with XGBoost model: {e}")
+
+        elif selected_model == 'BERT' and bert_model and bert_tokenizer and bert_encoders:
+            try:
+                cleaned_description = clean_text_for_bert(new_description)
+                encoding = bert_tokenizer.encode_plus(
+                    cleaned_description, add_special_tokens=True, max_length=256,
+                    return_token_type_ids=False, padding='max_length', truncation=True,
+                    return_attention_mask=True, return_tensors='pt',
+                )
+                input_ids = encoding['input_ids']
+                attention_mask = encoding['attention_mask']
+
+                with torch.no_grad():
+                    outputs = bert_model(input_ids=input_ids, attention_mask=attention_mask)
+
+                target_columns = list(bert_encoders.keys())
+                for col in target_columns:
+                    logits = outputs[col]
+                    probabilities = F.softmax(logits, dim=1).cpu().numpy()[0]
+                    prediction_index = torch.argmax(logits, dim=1).cpu().numpy()[0]
+                    
+                    confidence = probabilities[prediction_index]
+                    predicted_label = bert_encoders[col].inverse_transform([prediction_index])[0]
+                    category = col.replace('_Generalized', '').replace('_', ' ')
+                    results_data.append({"Category": category, "Prediction": predicted_label, "Confidence": confidence * 100})
+            except Exception as e:
+                st.error(f"An error occurred with BERT model: {e}")
+        
+        if results_data:
+            st.write("### Classification Results:")
+            results_df = pd.DataFrame(results_data)
+            st.dataframe(results_df,
+                         use_container_width=True,
+                         column_config={
+                             "Category": st.column_config.TextColumn("Category", width="medium"),
+                             "Prediction": st.column_config.TextColumn("Prediction", width="large"),
+                             "Confidence": st.column_config.ProgressColumn(
+                                 "Confidence", format="%.1f%%", min_value=0, max_value=100,
+                             ),
+                         },
+                         hide_index=True)
+        else:
+            st.warning("No results to display. Please check for errors above.")
+    
 st.markdown("---")
 st.warning(
     "**Disclaimer:** This is a proof-of-concept tool. The predictions are generated by a machine learning model "

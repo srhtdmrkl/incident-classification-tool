@@ -1,0 +1,670 @@
+
+--- Classification Report for Nature of Injury_Generalized ---
+                                                                          precision    recall  f1-score   support
+
+                                                    Abrasions, scratches       0.00      0.00      0.00        15
+                                    Amputations, avulsions, enucleations       0.85      0.88      0.87       503
+                                                         Anxiety, stress       0.00      0.00      0.00         1
+                             Asphyxiations, strangulations, suffocations       0.00      0.00      0.00         1
+                                                                Blisters       0.00      0.00      0.00         1
+                                                     Bruises, contusions       0.87      0.52      0.65        25
+                                                    Burns and corrosions       0.00      0.00      0.00         2
+                              Burns and other injuries, except fractures       0.00      0.00      0.00         1
+                                           Cartilage fractures and tears       0.80      0.78      0.79       274
+                             Cerebral and other intracranial hemorrhages       0.44      0.44      0.44        18
+                                                 Cerebrovascular disease       0.00      0.00      0.00         0
+                                           Chemical burns and corrosions       0.92      0.65      0.76        17
+                                                             Concussions       0.74      1.00      0.85        31
+                                           Cuts and abrasions or bruises       0.00      0.00      0.00        24
+                                                       Cuts, lacerations       0.79      0.90      0.84       176
+                                            Damage to orthopedic devices       0.00      0.00      0.00         0
+                                   Damage to prosthetic devices and aids       0.00      0.00      0.00         0
+                                                            Dislocations       0.80      0.60      0.69        20
+                                                            Dorsopathies       0.00      0.00      0.00         3
+                               EXPOSURES TO DISEASE—NO ILLNESS INCURRED        0.00      0.00      0.00         0
+                                               Effects of heat and light       1.00      1.00      1.00        24
+                                          Effects of reduced temperature       0.00      0.00      0.00         1
+                                                        Electrical burns       0.72      0.92      0.81        39
+                                         Electrocutions, electric shocks       0.90      0.50      0.64        18
+                                                               Fractures       0.81      0.95      0.88      1467
+                                            Fractures and other injuries       0.61      0.61      0.61       149
+                                                        General symptoms       0.00      0.00      0.00         0
+                                                          Gunshot wounds       0.76      0.88      0.81        40
+                                                    Heat (thermal) burns       0.90      0.99      0.94       146
+                                      Hernias due to traumatic incidents       0.67      0.41      0.51       392
+                                       INFECTIOUS AND PARASITIC DISEASES       0.00      0.00      0.00         0
+                          Infections of the skin and subcutaneous tissue       0.00      0.00      0.00         0
+              Internal injuries to organs and blood vessels of the trunk       0.64      0.87      0.74        85
+                                                   Intracranial injuries       0.75      0.87      0.81       108
+                   Intracranial injuries and injuries to internal organs       0.00      0.00      0.00         1
+                                           Intracranial injuries, n.e.c.       0.00      0.00      0.00         2
+                          Ischemic heart disease, including heart attack       1.00      0.50      0.67         2
+                            MULTIPLE DISEASES, CONDITIONS, AND DISORDERS       0.00      0.00      0.00         0
+                                     Multiple surface wounds and bruises       0.00      0.00      0.00         2
+                                                       Multiple symptoms       0.00      0.00      0.00         0
+                               Multiple traumatic injuries and disorders       0.00      0.00      0.00         4
+                       Multiple traumatic injuries and disorders, n.e.c.       0.00      0.00      0.00        12
+               Multiple traumatic injuries to bones, nerves, spinal cord       0.00      0.00      0.00         0
+Multiple traumatic injuries to muscles, tendons, ligaments, joints, etc.       0.00      0.00      0.00        23
+                                 Multiple types of intracranial injuries       0.00      0.00      0.00        16
+                                           Multiple types of open wounds       0.00      0.00      0.00         6
+                                     Nonspecified injuries and disorders       0.72      0.89      0.79       337
+                                                             Open wounds       0.00      0.00      0.00         5
+                                                     Open wounds, n.e.c.       0.00      0.00      0.00         0
+                                                                   Other       0.29      0.06      0.11        31
+                                                             Other burns       0.00      0.00      0.00         4
+                  Other poisoning, toxic, noxious, or allergenic effects       0.70      0.88      0.78        16
+                                  Other traumatic injuries and disorders       0.00      0.00      0.00         3
+                          Other traumatic injuries and disorders, n.e.c.       0.00      0.00      0.00         3
+                                                    Pneumonia, influenza       0.00      0.00      0.00         0
+                                  Puncture wounds, except gunshot wounds       0.59      0.67      0.63        64
+                                              Sprains and other injuries       0.00      0.00      0.00        40
+                                                 Sprains, strains, tears       0.62      0.42      0.50        38
+                                              Surface wounds and bruises       0.00      0.00      0.00         5
+                                      Surface wounds and bruises, n.e.c.       0.00      0.00      0.00         0
+                                Symptoms involving cardiovascular system       0.00      0.00      0.00         0
+                                        TRAUMATIC INJURIES AND DISORDERS       0.77      0.45      0.57       122
+                        Traumatic injuries to bones, nerves, spinal cord       0.00      0.00      0.00         2
+         Traumatic injuries to muscles, tendons, ligaments, joints, etc.       0.00      0.00      0.00         3
+ Traumatic injuries to muscles, tendons, ligaments, joints, etc., n.e.c.       0.00      0.00      0.00         1
+                    Traumatic injuries to nerves, except the spinal cord       0.00      0.00      0.00         2
+                                       Traumatic injuries to spinal cord       0.00      0.00      0.00         7
+                                                                Whiplash       0.00      0.00      0.00         0
+
+                                                                accuracy                           0.78      4332
+                                                               macro avg       0.27      0.26      0.26      4332
+                                                            weighted avg       0.74      0.78      0.75      4332
+
+
+--- Classification Report for Part of Body_Generalized ---
+                                                precision    recall  f1-score   support
+
+                                       Abdomen       0.56      0.79      0.65        47
+                                      Ankle(s)       0.78      0.81      0.80       207
+                           Ankle(s) and leg(s)       0.50      0.18      0.27        38
+                                        Arm(s)       0.84      0.98      0.90        99
+                                Arm(s), n.e.c.       0.00      0.00      0.00         0
+                                  BODY SYSTEMS       0.88      0.88      0.88        73
+            Back, including spine, spinal cord       0.78      0.86      0.82        94
+                                         Brain       0.79      0.94      0.86       196
+                                    Buttock(s)       0.00      0.00      0.00         2
+                                      Cheek(s)       0.00      0.00      0.00         2
+        Chest, including ribs, internal organs       0.66      0.86      0.75       139
+                              Coccygeal region       0.00      0.00      0.00         5
+               Cranial region, including skull       0.00      0.00      0.00         1
+                                        Ear(s)       0.00      0.00      0.00         9
+                                      Elbow(s)       0.83      0.95      0.89        42
+                                     Esophagus       0.00      0.00      0.00         0
+                                        Eye(s)       0.73      0.79      0.76        24
+                                          Face       0.43      0.38      0.40        24
+                                  Face, n.e.c.       0.00      0.00      0.00         1
+                      Finger(s), fingernail(s)       0.97      1.00      0.98       803
+                                   Foot (feet)       0.70      0.71      0.70       132
+                      Foot (feet) and ankle(s)       0.00      0.00      0.00        19
+                        Foot (feet) and leg(s)       0.00      0.00      0.00         7
+                           Foot (feet), n.e.c.       0.00      0.00      0.00         5
+                                    Forearm(s)       0.73      0.77      0.75        56
+                                      Forehead       0.00      0.00      0.00         1
+                                         Groin       0.00      0.00      0.00         2
+                                          HEAD       0.42      0.34      0.38        38
+                                       Hand(s)       0.75      0.87      0.81        84
+                           Hand(s) and arms(s)       1.00      0.06      0.12        16
+                         Hand(s) and finger(s)       0.00      0.00      0.00        11
+                          Hand(s) and wrist(s)       0.00      0.00      0.00         6
+                     Hand(s), except finger(s)       0.00      0.00      0.00        20
+                               Hand(s), n.e.c.       0.00      0.00      0.00         4
+                                 Head and neck       0.00      0.00      0.00        15
+                                Head and trunk       1.00      0.02      0.05        42
+                         Head, neck, and trunk       0.00      0.00      0.00         6
+                                         Heart       0.00      0.00      0.00         2
+                                        Hip(s)       0.80      0.93      0.86       191
+                            Hip(s) and leg(s)        0.00      0.00      0.00        15
+      Internal abdominal location, unspecified       0.00      0.00      0.00         1
+          Internal chest location, unspecified       1.00      0.04      0.08        25
+           Internal neck location, unspecified       0.00      0.00      0.00         6
+                                     Jaw, chin       0.50      0.11      0.18         9
+                                       Knee(s)       0.77      0.89      0.82        63
+                             LOWER EXTREMITIES       0.00      0.00      0.00         9
+                                        Leg(s)       0.84      0.85      0.84       259
+                                Leg(s), n.e.c.       0.00      0.00      0.00         2
+                                  Lower leg(s)       0.79      0.90      0.84       140
+                                 Lumbar region       0.79      0.59      0.68        37
+                               Lung(s), pleura       0.00      0.00      0.00         0
+                           MULTIPLE BODY PARTS       0.00      0.00      0.00        21
+                                         Mouth       0.00      0.00      0.00         5
+                        Multiple arm locations       0.00      0.00      0.00         2
+                         Multiple back regions       0.00      0.00      0.00         0
+                   Multiple body parts, n.e.c.       0.47      0.87      0.61       270
+             Multiple cranial region locations       0.00      0.00      0.00         1
+                       Multiple face locations       0.00      0.00      0.00        10
+                Multiple foot (feet) locations       0.00      0.00      0.00         2
+                       Multiple head locations       0.00      0.00      0.00        15
+             Multiple internal chest locations       0.00      0.00      0.00         0
+              Multiple internal neck locations       0.00      0.00      0.00         0
+                        Multiple leg locations       0.00      0.00      0.00        12
+          Multiple lower extremities locations       0.00      0.00      0.00         1
+  Multiple lower extremities locations, n.e.c.       0.00      0.00      0.00         3
+              Multiple pelvic region locations       0.00      0.00      0.00         2
+                      Multiple trunk locations       0.41      0.21      0.27        63
+          Multiple upper extremities locations       0.00      0.00      0.00         0
+  Multiple upper extremities locations, n.e.c.       0.00      0.00      0.00         4
+                        NECK, INCLUDING THROAT       0.75      0.46      0.57        26
+                                 Neck and back       0.00      0.00      0.00         3
+                            Nose, nasal cavity       0.00      0.00      0.00         7
+                                         Other       0.62      0.63      0.63       424
+                                 Pelvic region       0.00      0.00      0.00         6
+                                        Pelvis       0.76      0.85      0.80        53
+                                 Sacral region       0.00      0.00      0.00         0
+                                         Scalp       0.00      0.00      0.00         5
+                        Shoulder(s) and arm(s)       0.00      0.00      0.00         5
+                          Shoulder(s) and back       0.00      0.00      0.00         4
+Shoulder(s), including clavicle(s), scapula(e)       0.79      0.74      0.76        35
+                                         Skull       0.54      0.82      0.65        17
+                                       Sole(s)       0.80      0.33      0.47        12
+                                        Spleen       0.00      0.00      0.00         0
+                                 Stomach organ       0.00      0.00      0.00         1
+                                         TRUNK       0.00      0.00      0.00         5
+                                      Thigh(s)       0.79      0.88      0.83       102
+                               Thoracic region       0.00      0.00      0.00         7
+                           Toes(s), toenail(s)       0.85      0.80      0.82        41
+                             UPPER EXTREMITIES       0.00      0.00      0.00         2
+                       Upper and lower limb(s)       0.00      0.00      0.00        38
+                                  Upper arm(s)       0.80      0.36      0.50        22
+                                Urinary organs       0.00      0.00      0.00         0
+                                 Vocal cord(s)       0.00      0.00      0.00         1
+                                    Whole body       0.00      0.00      0.00         3
+                                      Wrist(s)       0.89      0.96      0.92        70
+                           Wrist(s) and arm(s)       0.00      0.00      0.00         3
+
+                                      accuracy                           0.75      4332
+                                     macro avg       0.28      0.25      0.25      4332
+                                  weighted avg       0.71      0.75      0.72      4332
+
+
+--- Classification Report for Event Type_Generalized ---
+                                                                                    precision    recall  f1-score   support
+
+                                                         Aircraft incident, n.e.c.       0.00      0.00      0.00         0
+                                                    Animal transportation incident       0.00      0.00      0.00         2
+                         Bending, crawling, reaching, twisting, climbing, stepping       0.00      0.00      0.00         4
+                                                                  Bites and stings       0.00      0.00      0.00         1
+                                    Boarding, alighting—excluding slip, trip, fall       0.00      0.00      0.00         1
+                                                CONTACT WITH OBJECTS AND EQUIPMENT       0.00      0.00      0.00        14
+                                   Caught in or compressed by equipment or objects       0.00      0.00      0.00        27
+                           Caught in or compressed by equipment or objects, n.e.c.       0.00      0.00      0.00         2
+                                          Caught in running equipment or machinery       0.73      0.92      0.81       179
+                 Collapsing building, structure, or structural element during fire       0.00      0.00      0.00         0
+                               Collision between rail vehicle and another vehicle        0.00      0.00      0.00         0
+                              Compressed or pinched between two stationary objects       0.44      0.21      0.28        68
+                            Compressed or pinched by shifting objects or equipment       0.57      0.74      0.64       269
+                                           Contact with cold objects or substances       0.00      0.00      0.00         4
+                                            Contact with hot objects or substances       0.68      0.95      0.79        58
+                                        Contact with objects and equipment, n.e.c.       0.00      0.00      0.00         8
+                                                 Demolition or blasting explosion        0.00      0.00      0.00         3
+                                                               Depletion of oxygen       0.00      0.00      0.00         1
+                                                                        Derailment       0.00      0.00      0.00         0
+                                                    Direct exposure to electricity       0.50      0.08      0.14        24
+                                                                    Dust explosion       0.00      0.00      0.00         0
+                                    EXPOSURE TO HARMFUL SUBSTANCES OR ENVIRONMENTS       0.00      0.00      0.00         1
+                                            Entangled in other object or equipment       0.75      0.10      0.18        29
+                                                   Excavation or trenching cave-in       0.00      0.00      0.00        16
+                             Explosion of nonpressurized vapors, gases, or liquids       0.00      0.00      0.00         4
+                                     Explosion of pressure vessel, piping, or tire       0.00      0.00      0.00         3
+                                                Explosion or fire on water vehicle       0.36      0.54      0.43        26
+                                                                 Explosion, n.e.c.       0.00      0.00      0.00         2
+                                                                        Explosions       0.00      0.00      0.00         4
+                                                           Exposure to electricity       0.00      0.00      0.00         0
+                                                    Exposure to environmental cold       0.00      0.00      0.00         1
+                                                    Exposure to environmental heat       0.96      1.00      0.98        24
+         Exposure to harmful substance through skin, eyes, or other exposed tissue       0.80      0.31      0.44        13
+                                              Exposure to other harmful substances       0.00      0.00      0.00         1
+                   Exposure to other harmful substance—multiple routes of exposure       0.00      0.00      0.00         1
+                                 Exposure to traumatic or stressful event, n.e.c.        0.00      0.00      0.00         1
+                                                               FALLS, SLIPS, TRIPS       0.00      0.00      0.00        18
+                                                              FIRES AND EXPLOSIONS       0.00      0.00      0.00         0
+                                       Fall from collapsing structure or equipment       0.55      0.40      0.46       220
+                                               Fall on same level due to slipping        0.78      0.95      0.86       281
+                                                Fall on same level due to tripping       0.74      0.91      0.82       248
+                                                       Fall on same level, n.e.c.        0.59      0.34      0.43        80
+                                                             Fall on water vehicle       0.00      0.00      0.00         1
+                                 Fall onto or against object on same level, n.e.c.       0.00      0.00      0.00        16
+                            Fall or jump curtailed by personal fall arrest system        0.00      0.00      0.00         3
+             Fall or jump from and struck by rail vehicle—transportation incident        0.00      0.00      0.00         2
+                                                   Fall or jump from water vehicle       0.00      0.00      0.00         2
+                                          Fall through surface or existing opening       0.66      0.67      0.66        85
+                                                                Fall while sitting       0.00      0.00      0.00         1
+                                                          Fall, slip, trip, n.e.c.       0.00      0.00      0.00         1
+                                                              Falls on same level        0.00      0.00      0.00        24
+                                                              Falls to lower level       0.00      0.00      0.00         5
+                                                                             Fires       0.00      0.00      0.00         2
+                                  Ignition of clothing from controlled heat source       0.55      0.46      0.50        13
+                                             Ignition of vapors, gases, or liquids       0.48      0.74      0.58        35
+                                                  Indirect exposure to electricity       0.67      0.90      0.76        29
+                                                    Ingestion of harmful substance       0.50      0.25      0.33         4
+                                                  Inhalation of harmful substance        0.65      0.87      0.74        15
+                                           Injured by handheld object or equipment       0.00      0.00      0.00        26
+                            Injury by other person—unintentional or intent unknown       0.00      0.00      0.00        12
+                          Injury by person—unintentional or intent unknown, n.e.c.       0.00      0.00      0.00         1
+                                                Intentional injury by other person       0.70      0.87      0.77        53
+                                       Jump from collapsing structure or equipment       0.00      0.00      0.00         0
+                                                           Kneeling, kneeling down       0.00      0.00      0.00         0
+                                                                         Landslide       0.00      0.00      0.00         4
+                                  Machinery or equipment incident on water vehicle       0.00      0.00      0.00         3
+                                                          Mine collapse or cave-in       0.50      0.68      0.58       103
+                                  Multiple types of exertions and bodily reactions       0.00      0.00      0.00         1
+                          Multiple types of overexertion involving outside sources       0.00      0.00      0.00         1
+                              Multiple types of overexertions and bodily reactions       0.00      0.00      0.00         0
+                                           Nonroadway collision with other vehicle       0.22      0.04      0.06        54
+                              Nonroadway collisions with object other than vehicle       0.63      0.93      0.75       217
+                      Nonroadway incident involving motorized land vehicle, n.e.c.       0.00      0.00      0.00         0
+                           Nonroadway incidents involving motorized land vehicles        0.00      0.00      0.00         1
+                                                  Nonroadway noncollision incident       0.23      0.22      0.23        54
+                                                        Nonstructural fire, n.e.c.       0.00      0.00      0.00         3
+                                                  OVEREXERTION AND BODILY REACTION       0.00      0.00      0.00         0
+                                                                             Other       0.40      0.21      0.28       184
+                                                                     Other cave-in       0.34      0.31      0.32        72
+                                               Other exertions or bodily reactions       0.00      0.00      0.00         3
+                                                         Other fall to lower level       0.74      0.95      0.83       822
+                                                         Other jump to lower level       0.00      0.00      0.00        14
+                                          Other structural fire without collapse         0.00      0.00      0.00         1
+                             Overexertion and bodily reaction and exertion, n.e.c.       0.00      0.00      0.00         0
+                                    Overexertion in holding, carrying, or wielding       0.00      0.00      0.00         0
+                                                 Overexertion in lifting, lowering       0.00      0.00      0.00         2
+                                      Overexertion in pushing, pulling, or turning       0.00      0.00      0.00         0
+                                                Overexertion in throwing, catching       0.40      1.00      0.57         4
+                                            Overexertion involving outside sources       0.00      0.00      0.00         0
+                                    Overexertion involving outside sources, n.e.c.       0.00      0.00      0.00         0
+                                                              Parachuting incident       0.00      0.00      0.00         0
+                                                              Pedal cycle incident       0.00      0.00      0.00         0
+                                  Pedestrian struck by vehicle in nonroadway area        0.00      0.00      0.00         8
+                                           Pedestrian struck by vehicle in roadway       0.00      0.00      0.00         0
+                                         Pedestrian struck by vehicle in work zone       0.00      0.00      0.00         1
+                                      Pedestrian struck by vehicle on side of road       0.00      0.00      0.00         1
+                                             Pedestrian vehicular incident, n.e.c.       0.00      0.00      0.00        12
+                                                     Rail vehicle incident, n.e.c.       0.00      0.00      0.00         0
+                                  Roadway collision with object other than vehicle       0.00      0.00      0.00         1
+                                              Roadway collision with other vehicle       0.00      0.00      0.00         6
+                                                     Roadway noncollision incident       0.00      0.00      0.00         1
+                                        Rubbed or abraded by foreign matter in eye       0.00      0.00      0.00        10
+                                         Rubbed or abraded by friction or pressure       0.00      0.00      0.00         3
+                                 Rubbed or abraded by friction or pressure, n.e.c.       0.00      0.00      0.00         1
+                                          Rubbed or abraded by kneeling on surface       0.00      0.00      0.00        27
+                                       Rubbed or abraded by objects being handled        0.00      0.00      0.00         1
+                               Rubbed or abraded by shoes, apparel, or accessories       0.24      0.24      0.24        25
+                                                   Running, without other incident       0.00      0.00      0.00         0
+                                                Self-inflicted injury—intentional        0.00      0.00      0.00         1
+                             Self-inflicted injury—unintentional or intent unknown       0.00      0.00      0.00         6
+                                                             Sitting, sitting down       0.00      0.00      0.00         0
+                                                         Slip or trip without fall       0.00      0.00      0.00         0
+                                                 Slip or trip without fall, n.e.c.       0.00      0.00      0.00         1
+                                                                 Slip without fall       0.00      0.00      0.00        29
+                                                       Small-scale (limited) fire        0.00      0.00      0.00         3
+                                         Struck against moving object or equipment       0.00      0.00      0.00        11
+                                                Struck against object or equipment       0.00      0.00      0.00         1
+                                        Struck against object or equipment, n.e.c.       0.00      0.00      0.00         3
+                                     Struck against stationary object or equipment       0.00      0.00      0.00        10
+                                                                 Struck by animal        0.00      0.00      0.00         2
+                                             Struck by discharged or flying object       0.62      0.86      0.72       163
+                 Struck by falling object or equipment—other than powered vehicle        0.69      0.92      0.79       304
+                                                     Struck by object or equipment       0.00      0.00      0.00         6
+                                             Struck by object or equipment, n.e.c.       0.00      0.00      0.00         2
+                                            Struck by powered vehicle—nontransport       0.56      0.20      0.29        51
+                 Struck by rolling object or equipment—other than powered vehicle        0.00      0.00      0.00        22
+                        Struck by swinging or slipping object, other than handheld       0.75      0.12      0.21        24
+        Struck, caught, or crushed in collapsing structure, equipment, or material       0.00      0.00      0.00        25
+Struck, caught, or crushed in collapsing structure, equipment, or material, n.e.c.       0.22      0.08      0.12        24
+             Struck, caught, or crushed in other collapsing structure or equipment       0.00      0.00      0.00         8
+                                                          TRANSPORTATION INCIDENTS       0.00      0.00      0.00         0
+                                                                 Trip without fall       0.00      0.00      0.00        10
+                                                         Vehicle or machinery fire       0.00      0.00      0.00         7
+                                                   Walking, without other incident       0.00      0.00      0.00         0
+                                                          Water vehicle collisions       0.00      0.00      0.00         1
+                                                    Water vehicle incident, n.e.c.       0.00      0.00      0.00         6
+                                               Water vehicle incident, unspecified       0.00      0.00      0.00         0
+                                                           Water vehicle incidents       0.00      0.00      0.00         0
+                                          Water vehicle or propeller struck person       0.00      0.00      0.00         4
+
+                                                                          accuracy                           0.65      4332
+                                                                         macro avg       0.14      0.14      0.13      4332
+                                                                      weighted avg       0.56      0.65      0.59      4332
+
+
+--- Classification Report for Source of Injury_Generalized ---
+                                                                           precision    recall  f1-score   support
+
+                                                                    Acids       0.00      0.00      0.00         2
+                                                             Acquaintance       0.00      0.00      0.00         3
+                                                 Adhesives, glues, n.e.c.       0.00      0.00      0.00         3
+                                        Agricultural and garden machinery       0.00      0.00      0.00         2
+                                                   Agricultural buildings       0.00      0.00      0.00         2
+                                                             Air pressure       0.00      0.00      0.00         4
+                                                                 Aircraft       0.00      0.00      0.00         1
+                                             Aircraft—powered rotary wing       0.00      0.00      0.00         1
+                                             Airplanes—powered fixed wing       0.00      0.00      0.00         5
+                                                                 Alcohols       0.00      0.00      0.00         5
+                                                                Aldehydes       0.00      0.00      0.00         0
+                                                                 Alkalies       0.00      0.00      0.00         0
+                                           Ammonia and ammonium compounds       0.00      0.00      0.00         0
+                                                               Ammunition       0.00      0.00      0.00         1
+                                              Amusement park rail vehicle       0.00      0.00      0.00         0
+                                      Animal and plant byproducts, n.e.c.       0.00      0.00      0.00         0
+                                                 Animal products, nonfood       0.00      0.00      0.00         1
+                                                Armored personnel carrier       0.00      0.00      0.00         0
+                                                                Aromatics       0.00      0.00      0.00         0
+                                                    Arsenic and compounds       0.00      0.00      0.00         0
+                                               Assailant, suspect, inmate       0.43      0.90      0.58        29
+                                                Audio and video equipment       0.00      0.00      0.00         1
+                                                                 Bacteria       0.00      0.00      0.00         0
+                                                                    Barge       0.00      0.00      0.00         4
+                                      Bending, rolling, shaping machinery       0.00      0.00      0.00        29
+                                                     Bicycle, pedal cycle       0.00      0.00      0.00         0
+                                    Blackboards, bulletin boards, mirrors       0.00      0.00      0.00         0
+                                 Bodily conditions of injured, ill worker       0.00      0.00      0.00         2
+                         Bodily motion or position of injured, ill worker       0.31      0.18      0.23        22
+                                  Books, notebooks, magazines, catalogues       0.00      0.00      0.00         0
+                                              Boring handtools—nonpowered       0.00      0.00      0.00         3
+                                    Boring handtools—power not determined       0.00      0.00      0.00         8
+                                                 Boring handtools—powered       0.00      0.00      0.00         9
+                             Boring, drilling, planing, milling machinery       0.24      0.73      0.36        51
+                                         Bricks, blocks, structural stone       0.00      0.00      0.00         6
+                                                     Bridges, dams, locks       0.00      0.00      0.00         3
+                                        Building materials—solid elements       0.00      0.00      0.00         6
+                                                         Building, n.e.c.       0.00      0.00      0.00         1
+                                     Buildings—office, plant, residential       0.00      0.00      0.00         0
+                                          CHEMICALS AND CHEMICAL PRODUCTS       0.00      0.00      0.00         9
+                                                       Caps, lids, covers       1.00      0.06      0.11        17
+                                                                Cardboard       0.00      0.00      0.00         7
+     Cargo ship, freighter, passenger liner, ship, excluding sail-powered       0.00      0.00      0.00         2
+                                       Cart, dolly, hand truck—nonpowered       0.22      0.29      0.25        17
+                                          Cases, cabinets, racks, shelves       0.00      0.00      0.00        29
+                                                          Ceilings, walls       0.00      0.00      0.00        17
+                                                Chemical products—general       0.00      0.00      0.00         0
+                                  Chemicals and chemical products, n.e.c.       0.00      0.00      0.00         1
+                                              Chips, particles, splinters       0.24      0.35      0.28        23
+                                          Chlorine and chlorine compounds       0.00      0.00      0.00         2
+                                               Clay—natural and processed       0.00      0.00      0.00         0
+                             Cleaning and polishing agents, disinfectants       0.00      0.00      0.00         7
+                                                       Clothing and shoes       0.26      0.94      0.41        17
+                     Co-worker or work associate of injured or ill worker       0.00      0.00      0.00        16
+                                                          Coal, coal dust       0.00      0.00      0.00         0
+                          Coal, natural gas, petroleum fuels and products       0.00      0.00      0.00         4
+                  Coal, natural gas, petroleum fuels and products, n.e.c.       0.00      0.00      0.00         1
+                                                Commercial fishing vessel       0.00      0.00      0.00         0
+                                       Computers and peripheral equipment       0.15      0.18      0.16        17
+                                                          Confined spaces       0.00      0.00      0.00         1
+                                                      Construction debris       0.00      0.00      0.00         2
+                              Construction, logging, and mining machinery       0.00      0.00      0.00         0
+                                                               Containers       0.00      0.00      0.00         1
+                                                Containers—nonpressurized       0.25      0.30      0.27        76
+                                                   Containers—pressurized       0.00      0.00      0.00        15
+                                            Containers—variable restraint       0.00      0.00      0.00        44
+                                         Conveyors—gravity and nonpowered       0.60      0.09      0.15        35
+                                                        Conveyors—powered       0.22      0.65      0.32        37
+                         Cooling and humidifying machinery and appliances       0.00      0.00      0.00        12
+                                                                   Cranes       0.18      0.08      0.11        38
+                                Curbs, traffic calming bumps, embankments       0.00      0.00      0.00         6
+                                             Cutting handtools—nonpowered       0.62      0.33      0.43        24
+                                   Cutting handtools—power not determined       0.00      0.00      0.00         0
+                                                Cutting handtools—powered       0.00      0.00      0.00         6
+                                           Derricks and related equipment       0.00      0.00      0.00         6
+                                             Digging handtools—nonpowered       0.00      0.00      0.00         1
+                                                              Dirt, earth       0.00      0.00      0.00         0
+                                  Dishes, drinking cups, beverage glasses       0.00      0.00      0.00         4
+                                 Ditches, channels, trenches, excavations       0.00      0.00      0.00         6
+                                            Drugs, alcohol, and medicines       0.00      0.00      0.00         1
+                                                               Dust masks       0.00      0.00      0.00         0
+                                            Ear plugs, hearing protectors       0.00      0.00      0.00         0
+                                                           Electric parts       0.00      0.00      0.00        29
+                                                          Elevator shafts       0.00      0.00      0.00         5
+Elevators, hoists, aerial lifts, personnel platforms—except truck-mounted       0.45      0.40      0.42        43
+                                             Engine parts and accessories       0.00      0.00      0.00         7
+                                                      Entrances and exits       0.77      0.53      0.62        19
+                                                     Excavating machinery       0.00      0.00      0.00        19
+                                              Explosives, blasting agents       0.00      0.00      0.00         2
+                         Extruding, injecting, forming, molding machinery       0.00      0.00      0.00        14
+                                              Face shields, welding masks       0.00      0.00      0.00         0
+                                                                Fasteners       0.20      0.51      0.29        39
+                                       Fasteners, connectors, ropes, ties       0.00      0.00      0.00         1
+                               Fasteners, connectors, ropes, ties, n.e.c.       0.00      0.00      0.00         5
+                          Fasteners, connectors, ropes, ties, unspecified       0.00      0.00      0.00         6
+                                              Fences, fence panels, gates       0.00      0.00      0.00         1
+                                                    Fiberglass insulation       0.00      0.00      0.00         2
+                                                       Fire, flame, smoke       0.00      0.00      0.00         3
+                                                                 Firearms       0.00      0.00      0.00         0
+      Firearms, law enforcement, and other self-defense equipment, n.e.c.       0.00      0.00      0.00         0
+                                                          Fish, shellfish       0.00      0.00      0.00         0
+                                         Flooding and other water sources       0.28      0.58      0.38        19
+                                        Floor, wall, and window coverings       0.00      0.00      0.00         4
+                                                                   Floors       0.67      0.91      0.78       504
+                                        Floors, walkways, ground surfaces       0.47      0.36      0.41       181
+                                          Fluorine and fluorine compounds       0.00      0.00      0.00         2
+                                           Foam caulking, foam insulation       0.00      0.00      0.00         2
+                       Food and beverage processing machinery—specialized       0.00      0.00      0.00        18
+                                                            Food products       0.00      0.00      0.00        11
+                                                                Furniture       0.00      0.00      0.00        14
+                                                   Furniture and fixtures       0.00      0.00      0.00         0
+                                           Furniture and fixtures, n.e.c.       0.00      0.00      0.00         0
+                                                      Grandstands, stadia       0.00      0.00      0.00         0
+                                            Grinding, polishing machinery       0.00      0.00      0.00        10
+                                            Gripping handtools—nonpowered       0.00      0.00      0.00         3
+                                                                   Ground       0.00      0.00      0.00        37
+                                           Halogens and halogen compounds       0.00      0.00      0.00         0
+                                                     Handrails, banisters       0.00      0.00      0.00         0
+                                                     Handtools—nonpowered       0.00      0.00      0.00         1
+                                           Handtools—power not determined       0.00      0.00      0.00        29
+                                       Harvesting and threshing machinery       0.00      0.00      0.00         2
+                             Heating and cooking machinery and appliances       0.00      0.00      0.00         5
+                  Heating, cooling, and cleaning machinery and appliances       0.00      0.00      0.00         0
+          Heating, cooling, and cleaning machinery and appliances, n.e.c.       0.00      0.00      0.00         3
+                                              Highway vehicles, motorized       1.00      0.06      0.11        17
+                                                     Hoisting accessories       0.00      0.00      0.00         0
+                                             Hoisting accessories, n.e.c.       0.00      0.00      0.00         0
+                                     Hooks, shackles, magnets, clamshells       0.00      0.00      0.00         5
+                                                                   Humvee       0.00      0.00      0.00         0
+                                               Ice—blocks, cubes, crushed       0.00      0.00      0.00         3
+                                                     Industrial buildings       0.00      0.00      0.00         0
+              Industrial vehicles, material hauling and transport—powered       0.68      0.93      0.79       344
+                                          Infectious and parasitic agents       0.00      0.00      0.00         0
+                                                Insects, arachnids, mites       0.00      0.00      0.00         2
+                                                                    Jacks       0.00      0.00      0.00         8
+                                        Joint compound, patching compound       0.00      0.00      0.00         6
+                                                                  Ketones       0.00      0.00      0.00         1
+                                                                  Ladders       0.00      0.00      0.00        79
+                                                          Ladders, n.e.c.       0.00      0.00      0.00         2
+                                                            Ladders—fixed       0.00      0.00      0.00        21
+                                                          Ladders—movable       0.51      0.96      0.67       183
+                                                             Latex gloves       0.00      0.00      0.00         0
+                                                                   Lathes       0.34      0.58      0.43        31
+                             Lifelines, lanyards, safety belts, harnesses       0.00      0.00      0.00         1
+                                          Lighting fixtures and equipment       0.00      0.00      0.00         0
+                                                      Liquids—nonchemical       0.29      0.59      0.38        17
+                                                                  Loaders       0.00      0.00      0.00        20
+                        Logging and wood processing machinery—specialized       0.00      0.00      0.00         6
+                                                        Luggage, handbags       0.00      0.00      0.00         0
+                                                                MACHINERY       0.10      0.02      0.04        42
+                                              Machine and appliance parts       0.12      0.37      0.18        59
+                                        Machine, tool, and electric parts       0.00      0.00      0.00         0
+                                Machine, tool, and electric parts, n.e.c.       0.00      0.00      0.00         1
+                                                   Mammals, except humans       0.75      0.27      0.40        11
+                                Material and personnel handling machinery       0.00      0.00      0.00         3
+                                                      Measuring handtools       0.00      0.00      0.00         1
+                      Medical buildings, except institutional residential       0.00      0.00      0.00         0
+                         Medical, surgical, x-ray machinery and equipment       0.00      0.00      0.00         0
+                                                    Mercury and compounds       0.00      0.00      0.00         1
+                                            Metal materials—nonstructural       0.00      0.00      0.00         1
+                                    Metal materials—nonstructural, n.e.c.       0.00      0.00      0.00         1
+                                 Metal sheets, ingots, bars—nonstructural       0.00      0.00      0.00         3
+                       Metal, woodworking, and special material machinery       0.00      0.00      0.00        20
+                                                        Metallic minerals       0.00      0.00      0.00         0
+                                            Mining and drilling machinery       0.00      0.00      0.00        15
+                                               Molten or hot metals, slag       0.00      0.00      0.00         5
+                                               Motorboat, motorized yacht       0.00      0.00      0.00         0
+                                                         Mowing machinery       0.00      0.00      0.00         9
+                                           Multi-purpose highway vehicles       0.00      0.00      0.00        43
+       Multiple aromatics and hydrocarbon derivatives, except halogenated       0.00      0.00      0.00         0
+                          Multiple chemicals or chemical mixtures, n.e.c.       0.00      0.00      0.00         1
+                                Multiple metallics and metallic compounds       0.00      0.00      0.00         0
+                                                              Natural gas       0.00      0.00      0.00         4
+                                 Off-road and industrial vehicles—powered       0.00      0.00      0.00         3
+                            Off-road or industrial vehicle—powered, n.e.c       0.00      0.00      0.00         0
+                                      Off-road passenger vehicles—powered       0.14      0.12      0.13        24
+                                            Office and business machinery       0.00      0.00      0.00         2
+                                    Office and business machinery, n.e.c.       0.00      0.00      0.00         4
+                                    Office, banking, and retail machinery       0.00      0.00      0.00         1
+                                                                    Other       0.21      0.34      0.26       155
+                                  Other agricultural and garden machinery       0.00      0.00      0.00         3
+          Other aromatics and hydrocarbon derivatives, except halogenated       0.00      0.00      0.00         0
+                                  Other building materials—solid elements       0.00      0.00      0.00         6
+                                          Other chemical products—general       0.00      0.00      0.00         0
+                                                  Other chemicals, n.e.c.       0.00      0.00      0.00         3
+                                                 Other client or customer       0.00      0.00      0.00         7
+                                                    Other confined spaces       0.00      0.00      0.00         0
+                        Other construction, logging, and mining machinery       0.00      0.00      0.00         3
+                             Other environmental and elemental conditions       0.00      0.00      0.00         0
+                                  Other floors, walkways, ground surfaces       0.75      0.13      0.22        47
+                                               Other handtools—nonpowered       0.00      0.00      0.00         4
+                                     Other handtools—power not determined       0.00      0.00      0.00         1
+                                                  Other handtools—powered       0.00      0.00      0.00         4
+                         Other law enforcement and self-defense equipment       0.00      0.00      0.00         1
+                                                          Other machinery       0.00      0.00      0.00         0
+                          Other material and personnel handling machinery       0.00      0.00      0.00         7
+                 Other metal, woodworking, and special material machinery       0.00      0.00      0.00        11
+                                            Other metallics and compounds       0.00      0.00      0.00         2
+                                        Other public and office buildings       0.00      0.00      0.00         0
+                                          Other special process machinery       0.00      0.00      0.00        18
+                                        Other steam, vapors, liquids, ice       0.00      0.00      0.00         0
+                                                Other structural elements       0.00      0.00      0.00         5
+                                                         Other structures       0.00      0.00      0.00        23
+                                                           Other vehicles       0.00      0.00      0.00         0
+                                                          Overhead hoists       0.00      0.00      0.00         6
+                                              Oxygen and oxygen compounds       0.30      0.78      0.44         9
+                                                      PARTS AND MATERIALS       0.00      0.00      0.00        27
+                                  Packaging, bottling, wrapping machinery       0.00      0.00      0.00         4
+                                         Paint, lacquer, shellac, varnish       0.00      0.00      0.00         4
+                                                   Pallet jack—nonpowered       0.00      0.00      0.00         2
+                                               Paper production machinery       0.00      0.00      0.00         4
+                                                             Parking lots       0.52      0.70      0.60        73
+                                              Parts and materials, n.e.c.       0.00      0.00      0.00         2
+                Passenger vehicles—automobiles, buses, and passenger vans       0.00      0.00      0.00         9
+                                                                 Patient        0.00      0.00      0.00         6
+                         Person, other than injured or ill worker, n.e.c.       0.00      0.00      0.00         1
+                                             Person—injured or ill worker       0.00      0.00      0.00         0
+                                     Person—injured or ill worker, n.e.c.       0.00      0.00      0.00         7
+                                  Person—other than injured or ill worker       0.00      0.00      0.00         8
+                              Pesticides and other agricultural chemicals       0.00      0.00      0.00         0
+                       Petroleum fuels, distillates, and products, n.e.c.       0.08      0.18      0.11        17
+                                                     Petroleum, crude oil       0.00      0.00      0.00         1
+                                                      Pipeline interiors        0.00      0.00      0.00         0
+                                                     Pipes, ducts, tubing       0.25      0.23      0.24        44
+                           Plant and industrial vehicle—nonpowered, n.e.c       0.00      0.00      0.00         2
+                                                             Plastic wrap       0.00      0.00      0.00         0
+                                                  Plastic, vinyl caulking       0.00      0.00      0.00         1
+                                                         Plastics, resins       0.00      0.00      0.00         5
+                             Plowing, planting, and fertilizing machinery       0.00      0.00      0.00         3
+                                                        Plumbing fixtures       0.00      0.00      0.00         1
+                                                                    Pools       0.00      0.00      0.00         4
+                                                 Presses, except printing       0.00      0.00      0.00         7
+                                         Printing machinery and equipment       0.00      0.00      0.00         7
+                                       Product assembly machinery, n.e.c.       0.00      0.00      0.00         1
+            Product testing, inspecting, and diagnostic machinery, n.e.c.       0.00      0.00      0.00         0
+                                                      Raft, floating dock       0.00      0.00      0.00         1
+                                                            Rail vehicles       0.00      0.00      0.00         0
+                              Raised natural structures, hills, mountains       0.00      0.00      0.00         6
+                                        Recreation and athletic equipment       0.00      0.00      0.00         3
+                    Relative or domestic partner of injured or ill worker       0.00      0.00      0.00         0
+                                                                 Reptiles       0.00      0.00      0.00         2
+                          Residential buildings, except institutionalized       0.00      0.00      0.00         1
+                                     Road grading and surfacing machinery       0.00      0.00      0.00        11
+                                                     Rocks, crushed stone       0.00      0.00      0.00         2
+                                             Roofing asphalt, roofing tar       0.27      0.83      0.41        18
+                                              Roofing paper, roofing felt       0.00      0.00      0.00         4
+                                                                    Roofs       0.66      0.97      0.78        95
+                                                      Ropes, ties, chains       0.33      0.06      0.11        48
+                                                  STRUCTURES AND SURFACES       0.00      0.00      0.00        14
+                                                             Sand, gravel       0.00      0.00      0.00         2
+                                              Sawing machinery—stationary       0.50      0.30      0.38        20
+                                                       Scaffolds, staging       0.52      0.88      0.65        93
+                                                              Scrap metal       0.00      0.00      0.00         1
+                                                     Scrap, waste, debris       0.00      0.00      0.00         5
+                                             Scrap, waste, debris, n.e.c.       0.00      0.00      0.00         5
+                                           Sewer, mine, and similar gases       0.00      0.00      0.00         0
+                              Shopping cart, grocery carriage—nonpowered        0.00      0.00      0.00         0
+                                                          Shrubs, grasses       0.00      0.00      0.00         1
+                                       Sidewalks, paths, outdoor walkways       0.00      0.00      0.00        20
+                                       Ski lifts, nonrail amusement rides       0.00      0.00      0.00         3
+                                                           Skids, pallets       0.00      0.00      0.00        18
+                                                                   Slings       0.00      0.00      0.00         0
+                                                     Solvents, degreasers       0.00      0.00      0.00         6
+                                                           Source, n.e.c.       0.00      0.00      0.00        20
+                                                Special process machinery       0.00      0.00      0.00         0
+                                                Stairs, steps, escalators       0.67      0.87      0.76        82
+                                      Steam, vapors, liquids, ice, n.e.c.       0.00      0.00      0.00         0
+                                                Steam, vapors—nonchemical       0.00      0.00      0.00         5
+                                   Street sweeping and cleaning machinery       0.00      0.00      0.00         0
+                                                Streets, roads, driveways       0.00      0.00      0.00         9
+                       Stretchers, backboards, wheeled cots, stair chairs       0.00      0.00      0.00         0
+                                Striking and nailing handtools—nonpowered       0.00      0.00      0.00         2
+                      Striking and nailing handtools—power not determined       0.00      0.00      0.00         9
+                                   Striking and nailing handtools—powered       0.00      0.00      0.00         0
+                                              Structural elements, n.e.c.       0.00      0.00      0.00        14
+                                               Structural metal materials       0.11      0.45      0.18        56
+                                          Structures and surfaces, n.e.c.       0.00      0.00      0.00         1
+                                          Structures other than buildings       0.00      0.00      0.00         1
+                                                                  Student       0.00      0.00      0.00         3
+                                                   Subway, elevated train       0.00      0.00      0.00         3
+                                              Sulfur and sulfur compounds       0.00      0.00      0.00         1
+                                           Surfacing handtools—nonpowered       0.00      0.00      0.00         1
+                                 Surfacing handtools—power not determined       0.00      0.00      0.00         0
+                                              Surfacing handtools—powered       0.00      0.00      0.00         3
+                                        TOOLS, INSTRUMENTS, AND EQUIPMENT       0.00      0.00      0.00         1
+                                                                     Tank       0.00      0.00      0.00         0
+                                                 Tank, bin, vat interiors       0.00      0.00      0.00         0
+                                              Tarps and sheeting—nonmetal       0.00      0.00      0.00         1
+                                      Tarps and sheeting—nonmetal, n.e.c.       0.00      0.00      0.00         0
+                                        Tarps, plastic or fabric sheeting       0.00      0.00      0.00         9
+                            Tars, sealants, caulking, insulating material       0.00      0.00      0.00         0
+                             Tars, sealants, caulking, insulation, n.e.c.       0.00      0.00      0.00         0
+                                       Temperature extremes—environmental       0.00      0.00      0.00         6
+                           Textile, apparel, leather production machinery       0.00      0.00      0.00         1
+                                                                Textiles        0.00      0.00      0.00         0
+                                           Threading and tapping machines       0.00      0.00      0.00         2
+                                                          Tiles, shingles       0.00      0.00      0.00         3
+                                               Tires, inner tubes, wheels       0.00      0.00      0.00         5
+                                                  Tool parts, accessories       0.00      0.00      0.00        12
+                                Tools, instruments, and equipment, n.e.c.       0.00      0.00      0.00         7
+                                                            Towers, poles       0.00      0.00      0.00        15
+                                                           Tractors, PTOs       0.00      0.00      0.00         2
+                                                                 Trailers       0.00      0.00      0.00        32
+                                              Train, locomotive, rail car       0.00      0.00      0.00         6
+                                                           Trash, garbage       0.00      0.00      0.00         1
+                                                       Trees, logs, limbs       1.00      0.16      0.28        25
+                             Trucks—motorized freight hauling and utility       0.40      0.89      0.55       177
+                            Trusses, girders, beams—structurally attached       0.00      0.00      0.00        13
+                                                         Tugboat, towboat       0.00      0.00      0.00         2
+                                             Turning handtools—nonpowered       0.00      0.00      0.00         4
+                                   Turning handtools—power not determined       0.00      0.00      0.00         1
+                                                Turning handtools—powered       0.00      0.00      0.00         1
+                                        Underground mines, caves, tunnels       0.00      0.00      0.00         6
+                                                                 VEHICLES       0.00      0.00      0.00         1
+                                                          Valves, nozzles       0.00      0.00      0.00         9
+                                       Vehicle and mobile equipment parts       0.00      0.00      0.00         3
+                               Vehicle and mobile equipment parts, n.e.c.       0.25      0.03      0.06        31
+                                      Vehicle doors, liftgates, tailgates       0.00      0.00      0.00         1
+                                                           Vehicle, n.e.c       0.00      0.00      0.00         1
+                                                                    Wagon       0.00      0.00      0.00         0
+                   Washers, dryers, and cleaning machinery and appliances       0.00      0.00      0.00         4
+                                                     Water bodies—natural       0.00      0.00      0.00         0
+                                                     Water vehicle, n.e.c       0.00      0.00      0.00         2
+                                                           Water vehicles       0.00      0.00      0.00         7
+                                       Weather and atmospheric conditions       0.00      0.00      0.00         1
+                                    Welding and heating handtools—powered       0.00      0.00      0.00         1
+                                                          Wells, cisterns       0.00      0.00      0.00         2
+                                   Wheelchairs and other mobility devices       0.00      0.00      0.00         1
+                                                        Windows, openings       0.00      0.00      0.00        20
+                                             Windshields, vehicle windows       0.00      0.00      0.00         0
+                                                             Wood, lumber       0.17      0.04      0.06        27
+
+                                                                 accuracy                           0.44      4332
+                                                                macro avg       0.06      0.06      0.05      4332
+                                                             weighted avg       0.33      0.44      0.35      4332
+
